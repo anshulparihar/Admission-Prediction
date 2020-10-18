@@ -30,9 +30,11 @@ def index():
             filename = 'finalized_model.pickle'
             loaded_model = pickle.load(open(filename, 'rb')) # loading the model file from the storage
             # predictions using the loaded model filename
-            prediction=loaded_model.predict([[gre_score,toefl_score,university_rating,sop,lor,cgpa,research]])
+            scaler = pickle.load(open('scaler_model.pickle','rb'))
+            prediction=loaded_model.predict(scaler.transform([[gre_score,toefl_score,university_rating,sop,lor,cgpa,research]]))
             print('prediction is', prediction)
             # showing the prediction results in a UI
+            print(prediction)
             return render_template('result.html',prediction=round(100*prediction[0]))
         except Exception as e:
             print('The Exception message is: ',e)
